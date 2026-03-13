@@ -67,6 +67,8 @@ curl -X POST "https://www.edubase.net/api/v1/question" \
 
 **MATRIX** — Matrix/vector evaluation with numerical validation. Format: `[a11; a12 | a21; a22]` (semicolons separate columns, pipes separate rows).
 
+**MATRIX:GENERIC** — Matrix with strict exact matching (like GENERIC type). Each element requires exact match including spaces and punctuation.
+
 **MATRIX:EXPRESSION** — Each matrix element evaluated as an expression. For rotation matrices, Jacobians, etc.
 
 **SET** — Unordered collection of numbers. Order and repetition don't matter.
@@ -240,3 +242,49 @@ Available in `expression` and `matrix:expression` types, in `FORMULA` parameters
 **Conversions**: `degree2radian(x)`, `radian2degree(x)`, `number2binary(x)`, `binary2number(x)`, `number2roman(x)`, `roman2number(x)`, and octal/hexadecimal variants.
 
 **Two-parameter** (use semicolon separator): `min(a;b)`, `max(a;b)`, `mod(n;i)`, `fmod(n;i)`, `div(a;b)`, `intdiv(a;b)`
+
+## Additional Question Fields
+
+### Numerical & Date Validation
+
+| Field | Applicable Types | Description |
+|-------|------------------|-------------|
+| `decimals` | NUMERICAL, MATRIX, SET | Number of decimal places (default: 2) |
+| `tolerance` | NUMERICAL, MATRIX, SET | Validation tolerance. Values: `ABSOLUTE:N` (e.g. ±0.1), `RELATIVE:N%` (e.g. ±5%), `QUOTIENT` (integer multiple), `QUOTIENT2` (scalar multiple) |
+| `numerical_range` | NUMERICAL | Enable interval answers `{from}-{to}` with `+` |
+| `datetime_precision` | DATE/TIME | Granularity: `YEAR`, `MONTH`, `DAY` (default) |
+| `datetime_range` | DATE/TIME | Enable date range answers with `+` |
+
+### Choice & True/False Options
+
+| Field | Applicable Types | Description |
+|-------|------------------|-------------|
+| `maximum_choices` | MULTIPLE-CHOICE | Limit maximum number of selections |
+| `truefalse_third_options` | TRUE/FALSE | Add a third option (e.g. "Cannot determine") |
+| `truefalse_third_options_label` | TRUE/FALSE | Label for the third option |
+
+### Free-Text & File Options
+
+| Field | Applicable Types | Description |
+|-------|------------------|-------------|
+| `freetext_characters` | FREE-TEXT | Character limit for response |
+| `freetext_words` | FREE-TEXT | Word limit for response |
+| `freetext_rules` | FREE-TEXT | Auto-grading keyword rules |
+| `file_count` | FILE | Number of files allowed |
+| `file_types` | FILE | Allowed file extensions |
+
+### Hotspot Options
+
+| Field | Applicable Types | Description |
+|-------|------------------|-------------|
+| `hotspot_image` | HOTSPOT | Image for marking areas |
+| `hotspot_zones` | HOTSPOT | Zone definitions for valid areas |
+
+### Organization & Metadata
+
+| Field | Description |
+|-------|-------------|
+| `label` | Instance-level categorization (predefined by administrators) |
+| `tags` | User-defined tags, separated by `&&&` |
+| `ai` | Set to any value to mark question as AI-generated |
+| `group` | Question group name (when uploading to Quiz set) |
